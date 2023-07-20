@@ -70,9 +70,8 @@ const RockPaperScissors: React.FC = () => {
   }, [win]);
 
   const getResult = () => {
-    console.log('getResult', computerChoice, userChoice)
     if (computerChoice === userChoice) {
-      setResult(<h1 className="text-black text-3xl">It's a draw!</h1>)
+      setResult(<h1 className="text-black text-3xl">It&apos;s a draw!</h1>)
       setWin('draw')
     } else if (
       (computerChoice === 'rock' && userChoice === 'paper') ||
