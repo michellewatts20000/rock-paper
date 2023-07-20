@@ -5,17 +5,25 @@ import Confetti from 'react-confetti';
 
 const RockPaperScissors: React.FC = () => {
   const [userChoice, setUserChoice] = useState<string>('')
-  console.log(userChoice, 'userChoice')
+
   const [computerChoice, setComputerChoice] = useState<string>('')
-  console.log(computerChoice, 'computerChoice')
+
   const [result, setResult] = useState<React.ReactNode>('')
   const [win, setWin] = useState<string>('')
-  const [playerScore, setPlayerScore] = useState<number>(
-    parseInt(localStorage.getItem('playerScore') ?? '0')
-  )
-  const [computerScore, setComputerScore] = useState<number>(
-    parseInt(localStorage.getItem('computerScore') ?? '0')
-  )
+
+  const [playerScore, setPlayerScore] = useState<number>(0);
+  const [computerScore, setComputerScore] = useState<number>(0);
+
+  useEffect(() => {
+    // Check if window is available before accessing localStorage
+    if (typeof window !== 'undefined') {
+      const storedPlayerScore = parseInt(localStorage.getItem('playerScore') ?? '0');
+      const storedComputerScore = parseInt(localStorage.getItem('computerScore') ?? '0');
+
+      setPlayerScore(storedPlayerScore);
+      setComputerScore(storedComputerScore);
+    }
+  }, []);
 
   const clearScores = () => {
     setPlayerScore(0)
