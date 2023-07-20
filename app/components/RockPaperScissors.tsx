@@ -11,10 +11,10 @@ const RockPaperScissors: React.FC = () => {
   const [result, setResult] = useState<React.ReactNode>('')
   const [win, setWin] = useState<string>('')
   const [playerScore, setPlayerScore] = useState<number>(
-    parseInt(localStorage.getItem('playerScore')) || 0
+    parseInt(localStorage.getItem('playerScore') ?? '0')
   )
   const [computerScore, setComputerScore] = useState<number>(
-    parseInt(localStorage.getItem('computerScore')) || 0
+    parseInt(localStorage.getItem('computerScore') ?? '0')
   )
 
   const clearScores = () => {
@@ -42,7 +42,6 @@ const RockPaperScissors: React.FC = () => {
 
   const generateComputerChoice = () => {
     const randomNumber = Math.floor(Math.random() * 3)
-    console.log('randomNumber', randomNumber)
     setComputerChoice(possibleChoices[randomNumber])
   }
 
