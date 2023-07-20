@@ -29,6 +29,13 @@ module.exports = {
           800: '#987221',
           900: '#786318',
         },
+        twilight: {
+          500: '#DFDCE3', // Original color
+          600: '#8E8CAF',
+          700: '#7A799E',
+          800: '#66658D',
+          900: '#52527C',
+        }
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

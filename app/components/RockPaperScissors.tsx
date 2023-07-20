@@ -9,7 +9,7 @@ const RockPaperScissors: React.FC = () => {
   const [computerChoice, setComputerChoice] = useState<string>('')
 
   const [result, setResult] = useState<React.ReactNode>('')
-  const [win, setWin] = useState<string>('')
+  const [win, setWin] = useState<string>('start')
 
   const [playerScore, setPlayerScore] = useState<number>(0);
   const [computerScore, setComputerScore] = useState<number>(0);
@@ -28,7 +28,8 @@ const RockPaperScissors: React.FC = () => {
   const clearScores = () => {
     setPlayerScore(0)
     setComputerScore(0)
-    setResult('')
+    setResult(<h1 className="text-black text-3xl">Your go!</h1>)
+    setWin('start')
     localStorage.removeItem('playerScore')
     localStorage.removeItem('computerScore')
   }
@@ -70,10 +71,14 @@ const RockPaperScissors: React.FC = () => {
   }, [win]);
 
   const getResult = () => {
-    if (computerChoice === userChoice) {
+    if (computerChoice === userChoice && computerChoice !== '' && userChoice !== '') {
       setResult(<h1 className="text-black text-3xl">It&apos;s a draw!</h1>)
       setWin('draw')
-    } else if (
+    } else if (computerChoice === '' || userChoice === '') {
+      console.log('start')
+      setResult(<h1 className="text-black text-3xl">Your go!</h1>)
+    }
+    else if (
       (computerChoice === 'rock' && userChoice === 'paper') ||
       (computerChoice === 'paper' && userChoice === 'scissors') ||
       (computerChoice === 'scissors' && userChoice === 'rock')
@@ -100,37 +105,35 @@ const RockPaperScissors: React.FC = () => {
 
   return (
     <>
-      <div className="p-5 text-center flex flex-wrap justify-center md:justify-end space-x-4 md:space-x-10 full-w items-center">
-        <div id="player-score">
-          <strong>You: </strong>
-          {playerScore}
-        </div>
-        <div id="computer-score">
-          <strong>Computer: </strong> {computerScore}
-        </div>
-            <button
-              onClick={clearScores}
-              className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded sm:mt-4 md:mt-0"
-            >
-              Clear Scores
-            </button>
-      </div>
       <div className="flex min-h-screen flex-col items-center md:justify-around py-24">
         <div className="text-center flex space-x-10">
           <div id="computer-choice">
+            <p className="mb-3"><strong>Computer: </strong> {computerScore}</p>
             {getChoiceIcon(computerChoice, 'player1-')}
           </div>
-          <div id="user-choice">{getChoiceIcon(userChoice, 'player2-')}</div>
+          <div id="user-choice"><p className="mb-3"><strong>You: </strong>
+            {playerScore}</p>{getChoiceIcon(userChoice, 'player2-')}</div>
         </div>
         <div className="mt-10 md:mt-0">
-        <div className="p-5 text-center flex flex-wrap justify-center text-center md:justify-end full-w items-center">
-          <div id="result">{win === "lose" ? result : ""}</div>
-          <div id="result">{win === "draw" ? result : ""}</div>
-          <div id="result">{win === "win" ? result : ""}</div>
+          <div className="p-5 text-center flex flex-wrap justify-center text-center md:justify-end full-w items-center">
+            <div id="result">{win === "start" ? result : ""}</div>
+            <div id="result">{win === "lose" ? result : ""}</div>
+            <div id="result">{win === "draw" ? result : ""}</div>
+            <div id="result">{win === "win" ? result : ""}</div>
           </div>
           {showConfetti && <Confetti />}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 lg:mt-4">
+          <button
+            key="scissors"
+            onClick={() => {
+              setUserChoice('scissors')
+              generateComputerChoice()
+            }}
+            className="bg-twilight-600 hover:bg-twilight-600 text-white py-2 px-4 rounded"
+          >
+            Scissors
+          </button>
           <button
             key="paper"
             onClick={() => {
@@ -141,16 +144,7 @@ const RockPaperScissors: React.FC = () => {
           >
             Paper
           </button>
-          <button
-            key="scissors"
-            onClick={() => {
-              setUserChoice('scissors')
-              generateComputerChoice()
-            }}
-            className="bg-secondary-600 hover:bg-secondary-600 text-white py-2 px-4 rounded"
-          >
-            Scissors
-          </button>
+
           <button
             key="rock"
             onClick={() => {
@@ -160,6 +154,15 @@ const RockPaperScissors: React.FC = () => {
             className="bg-primary-800 hover:bg-primary-600 text-white py-2 px-4 rounded"
           >
             Rock
+          </button>
+        </div>
+
+        <div className="p-5 mt-20 text-center flex flex-wrap justify-center md:justify-end space-x-4 md:space-x-10 full-w items-center">
+          <button
+            onClick={clearScores}
+            className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded sm:mt-20 md:mt-0 text-sm"
+          >
+            Clear Scores
           </button>
         </div>
       </div>
